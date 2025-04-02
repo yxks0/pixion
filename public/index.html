@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PIXION</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<h1>-pixion-</h1>
+
+<section id="users-online">
+  <h2>User: </h2>
+  <ul id="userList"></ul>
+
+  <div class="auth-container">
+    <button onclick="login()">login with google</button>
+    <button onclick="logout()">logout</button>
+  </div>
+</section>
+
+
+
+<div class="toolbar">
+
+
+  <section>
+    <label for="colorPicker">color:</label>
+    <input type="color" id="colorPicker" value="#000000">
+    <button id="brushBtn" class="active"><svg width="42" height="42" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <rect x="38.3022" width="50" height="50" transform="rotate(50 38.3022 0)" fill="url(#pattern0_58_187)"/>
+      <defs>
+      <pattern id="pattern0_58_187" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <use xlink:href="#image0_58_187" transform="scale(0.015625)"/>
+      </pattern>
+      <image id="image0_58_187" width="65" height="65" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAzElEQVR4nO3QMRIAIRACwf3/p+dizKyjdFU6JWKqIiIWYFLdhgSYU7fhtQD8PHR8EBJArQ64HQmgVgfcjgTwqtOQAF51GhJA/Q1YpyEB1OqA25EAyr23RwIod6D2SADlDtQeCaDcgdojAZQ7UHskgHIHao8EUO5A7ZEAyh2oPRJAuQO1RwIod6D2SADlDtQeCaDcgdojAZQ7UHskgHIHbI8EUKsDbsfrAWYPXXd4lACD2UDHIwHm1G1IgDl1G14PMHru8CgBBvUamgT4APP/FneOyvR+AAAAAElFTkSuQmCC"/>
+      </defs>
+      </svg>
+      </button>
+    <button id="eraserBtn"><svg width="27" height="42" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <rect x="0.44165" width="50" height="50" fill="url(#pattern0_58_189)"/>
+      <defs>
+      <pattern id="pattern0_58_189" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <use xlink:href="#image0_58_189" transform="scale(0.015625)"/>
+      </pattern>
+      <image id="image0_58_189" width="65" height="65" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA0UlEQVR4nO3YMRLEMAgEwf3/p/dikWxgC+nwdApVyBNaAgDgNd5MtzMB9tLt/LUAbn7gdUFMgNW04Nc96O8DOOw/nbczAVZPgz2dtzMBVrvnab+dCbDaHSjttzMBVqeDtTMBVk+DPZ23MwFWu+dpv50JsNodKO23MwHOGv8XODn9/fJhp79fBCim3YsIUGjYvYgAhYbdiwhQaNi9iACFht2LCFBo2L2IAIWG3YsIUGjYvYgAhYbdiwhQaNi96PMBUpC36XYmwF66nb8eAACg//EDhG10Ncgm5wwAAAAASUVORK5CYII="/>
+      </defs>
+      </svg>
+      </button>
+    <button id="bucketBtn"><svg width="37" height="42" viewBox="0 0 55 35" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <rect x="0.44165" width="38" height="38" fill="url(#pattern0_58_207)"/>
+      <defs>
+      <pattern id="pattern0_58_207" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <use xlink:href="#image0_58_207" transform="scale(0.015625)"/>
+      </pattern>
+      <image id="image0_58_207" width="64" height="64" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA6klEQVR4nO3SQRKDQAhEUe5/6c5aUqkpC3pk4n97ET9GAEAjmcV0IoBXTKe3BdDmBccFEQGu/i34uIUeD6CnF3h6HxFgc/FpB9HbAmjYB2/fVwS4iuHSuvwBMa6oGX9AMq+oGQGS9qKnIUCVDkeAKhWL7r6o/Q+I4vMEKHIfrH1g9YMJkLgP1j5Qzdz7fiFAEsXnq9z72geu5hFgoRq4/WLd8wiwUA3cfrFuBFi4G7D9ImFGgIXtB1P3QPP7CZBsv0C3u+8nQLL9Ak8jQDKvqBkBknlFzQiQzCtqRoCkvehpCFClwxEAAOK3DzRg7/FKsDA0AAAAAElFTkSuQmCC"/>
+      </defs>
+      </svg>
+      </button>
+  </section>
+  
+
+  <section>
+    <button id="undoBtn"><svg width="51" height="50" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <rect width="50" height="50" transform="matrix(-1 0 0 1 50.4417 0)" fill="url(#pattern0_58_191)"/>
+      <defs>
+      <pattern id="pattern0_58_191" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <use xlink:href="#image0_58_191" transform="scale(0.015625)"/>
+      </pattern>
+      <image id="image0_58_191" width="64" height="64" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA2UlEQVR4nO3SwREEIQgFUfJP+u9ZrBrXGnAU+wWg0GoGAACwKTl2GxGgZbcRAZ5ZdSLAM6tOBGiNAlk12jWAPkIAZxQojT4yOxcBomhV2V3nFAGSyiYLm1u3BdChC3sEcPLLfSxsbhGgNRssy7Y/QARYI+3F3x68aP9zAtiiOQhw2w/Iuqcze1HWYN3GBMgJ3XH38AMsONi/ss4Nv1jVAswOQgDHgmSdGz6Idhk0iwjQehvsOCJAKzrY9nR7gNkFCeBYNRosSADHqtOAVScCPLPqdHsAAICd5wfydjZXsCh62wAAAABJRU5ErkJggg=="/>
+      </defs>
+      </svg>
+      </button>
+    <button id="redoBtn"><svg width="51" height="50" viewBox="0 0 51 50" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <rect x="0.44165" width="50" height="50" fill="url(#pattern0_58_190)"/>
+      <defs>
+      <pattern id="pattern0_58_190" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <use xlink:href="#image0_58_190" transform="scale(0.015625)"/>
+      </pattern>
+      <image id="image0_58_190" width="64" height="64" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA2UlEQVR4nO3SwREEIQgFUfJP+u9ZrBrXGnAU+wWg0GoGAACwKTl2GxGgZbcRAZ5ZdSLAM6tOBGiNAlk12jWAPkIAZxQojT4yOxcBomhV2V3nFAGSyiYLm1u3BdChC3sEcPLLfSxsbhGgNRssy7Y/QARYI+3F3x68aP9zAtiiOQhw2w/Iuqcze1HWYN3GBMgJ3XH38AMsONi/ss4Nv1jVAswOQgDHgmSdGz6Idhk0iwjQehvsOCJAKzrY9nR7gNkFCeBYNRosSADHqtOAVScCPLPqdHsAAICd5wfydjZXsCh62wAAAABJRU5ErkJggg=="/>
+      </defs>
+      </svg>
+      </button>
+    <button id="clearBtn">clear</button>
+  </section>
+  
+
+  <section>
+    <button id="saveBtn">save</button>
+    <button id="loadBtn">load</button>
+    <select id="slotSelector">
+      <option value="slot1">slot 1</option>
+      <option value="slot2">slot 2</option>
+      <option value="slot3">slot 3</option>
+    </select>
+  </section>
+  
+
+  <div id="pixelGrid"></div>
+
+
+  <section>
+    <label for="gridSize">grid size:</label>
+    <input type="number" id="gridSize" min="8" max="64" value="32">
+    <button id="resizeBtn">resize</button>
+  </section>
+
+  
+  
+
+  <section>
+    <button id="exportBtn">export as PNG</button>
+    <button id="uploadGalleryBtn">upload to gallery</button>
+    <button id="galleryBtn"><svg width="70" height="61" viewBox="0 0 70 61" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <rect width="69.0164" height="61" fill="url(#pattern0_42_525)"/>
+      <defs>
+      <pattern id="pattern0_42_525" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <use xlink:href="#image0_42_525" transform="matrix(0.00883848 0 0 0.01 0.0580762 0)"/>
+      </pattern>
+      <image id="image0_42_525" width="100" height="100" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAABdklEQVR4nO3dMU6DYACGYY7g4NCxo6Ojo0fxKB6lY4/h6DE6dvQGnzFxMtLQFO0HfZ7k30oIvP0pJRCGAQAAAAAAAOCkJA9Jno1csg8eZvuaJdmFS+0E6SJIGUHKCFJGkFsMMt9KViL/sa8EmU6QMoKUEaSMIGUEmVmSxyRvE8ZmZHlnWXP6vjI7xXZkeUHmJEiZmCFdIkiXCNIlgnSJIF0iSOUdNrsJ435kef9DmghSZvVBkmxGbjx7GgrdQpCXkXUfhkKClBGkjCBlBCkjSJnVBJn5kYdt4XYI8pMgZzBDzuCQNZ1D1u/8hlzKIetK0zDJfuTGs2Pm837mOo4jn9+v/izr66JgluNwzX31LysRZAaCTGeG/C2HrDLrCJLkLsnryPjIcnyc2I67JQXZZv22gnQRpIwgZQQps6ggm4kPTi55bBYT5JZFkC6ClBGkjCBlBClz7SBMJ0gZQcoIUkaQMoKsOYjXVaTodRUAAAAAAADAsE6fXqASRkgJ2F8AAAAASUVORK5CYII="/>
+      </defs>
+      </svg>
+       <p>view public gallery</p></button>
+  </section>
+</div>
+
+  <script type="module" src="./firebase-config.js"></script>
+  <script src="script.js"></script>
+
+</div>
+
+<script type="module">
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  const auth = getAuth();
+  const userList = document.getElementById("userList");
+
+  onAuthStateChanged(auth, (user) => {
+    userList.innerHTML = "";
+    if (user) {
+      const listItem = document.createElement("li");
+      listItem.textContent = user.displayName || user.email;
+      userList.appendChild(listItem);
+    } else {
+      userList.innerHTML = "<li>No user logged in</li>";
+    }
+  });
+</script>
+
+
+</body>
+</html>
