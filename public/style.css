@@ -62,7 +62,6 @@ button {
 
 body {
   font-family: 'Minecraft Standard', sans-serif;
-  src: url("./fonts/MinecraftStandard.otf");
   line-height: 1.6;
   color: var(--dark-color);
   background-color: #B9D0E5;
