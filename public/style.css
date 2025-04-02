@@ -51,13 +51,13 @@ button {
 
 @font-face {
   font-family: 'Minecraft Standard';
-  src: url("./fonts/minecraft_standard/MinecraftStandard.otf");
+  src: url("./fonts/MinecraftStandard.otf");
 }
 
 @font-face {
   font-family: 'Minecraft Standard';
   font-weight: bold;
-  src: url("./fonts/minecraft_standard/MinecraftStandardBold.otf");
+  src: url("./fonts/MinecraftStandardBold.otf");
 }
 
 body {
