@@ -49,8 +49,19 @@ button {
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'Minecraft Standard';
+  src: url("fonts/minecraft_standard/MinecraftStandard.otf") format("opentype");
+}
+
+@font-face {
+  font-family: 'Minecraft Standard';
+  font-weight: bold;
+  src: url("fonts/minecraft_standard/MinecraftStandardBold.otf") format("opentype");
+}
+
 body {
-  font-family: 'Minecraft Standard', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Minecraft Standard';
   line-height: 1.6;
   color: var(--dark-color);
   background-color: #B9D0E5;
@@ -91,7 +102,7 @@ h1 {
 }
 
 button {
-  font-family: 'Minecraft Standard', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Minecraft Standard';
   font-size: 12px;
   padding: 8px 12px;
   background-color: var(--primary-color);
