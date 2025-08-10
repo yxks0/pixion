@@ -92,6 +92,12 @@ window.uploadToGallery = async function (drawingData) {
     uid: user.uid,
     name: user.displayName,
     drawing: drawingData,
+    reactions: {
+      like: 0,
+      love: 0,
+      funny: 0
+    },
+    comments: [],
     timestamp: Date.now()
   });
 
@@ -103,4 +109,26 @@ window.uploadToGallery = async function (drawingData) {
 window.loadPublicGallery = async function () {
   const snapshot = await getDocs(collection(db, "publicGallery"));
   return snapshot.docs.map(doc => doc.data());
+  
 };
+
+
+
+
+// import { addDoc, collection } from "firebase/firestore";
+// import { db } from "./firebase.js"; // your Firebase setup
+
+// async function saveToPublicGallery(drawingData, userName = "Anonymous") {
+//   await addDoc(collection(db, "publicGallery"), {
+//     drawing: drawingData,
+//     name: userName,
+//     reactions: {
+//       like: 0,
+//       love: 0,
+//       funny: 0
+//     },
+//     comments: []
+//   });
+// }
+
+

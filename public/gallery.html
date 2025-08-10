@@ -6,135 +6,307 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pixion Gallery</title>
   <style>
-      body {
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: 'Minecraft Standard', Tahoma, Geneva, Verdana, sans-serif;
       background: #B9D0E5;
-      color: #284B6B;
+      color: #333;
       text-align: center;
       margin: 0;
       padding: 0;
+      min-height: 100vh;
+      background-image: url('svg/bg.jpg');
+  background-size: cover;        /* or 'contain' if you want full image visible */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;  /* optional: keeps image fixed while scrolling */
     }
-    header {
-      background: #ff9800;
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      bottom: 0;
+      background: rgba(31, 27, 56, 0.7);
+      z-index: -1;
+    }
+
+    .gallery-header {
+      position: sticky;
+      background: linear-gradient(135deg, #335980, #0b2035);
       color: #fff;
-      padding: 20px;
-      font-size: 24px;
-      font-weight: bold;
+      padding: 30px 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
-    main {
-      max-width: 800px;
+
+    .gallery-header h1 {
+      margin: 0 0 10px 0;
+      font-size: 2.5em;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .gallery-header p {
+      margin: 0;
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+
+    .gallery-container {
+      max-width: 1200px;
       margin: 30px auto;
       padding: 20px;
-      background: #2c2c2c;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
-    section {
-      margin-bottom: 20px;
+
+    .nav-container {
+      margin: 30px 0;
     }
+
     button {
       font-family: 'Minecraft Standard', Tahoma, Geneva, Verdana, sans-serif;
-      background: #ff9800;
+      background: linear-gradient(135deg, #9fafdb, #22233f);
       color: white;
       border: none;
-      padding: 10px 20px;
-      margin: 20px;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #e68900;
-    }
-    #users-online {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    }
-    #users-online h2 {
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
-    #userList {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    #userList li {
+      padding: 12px 24px;
+      margin: 5px;
       font-size: 14px;
-      margin: 3px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
+
+    button:hover {
+      background: linear-gradient(135deg, #1f1b44, #898cb6);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button:focus {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
       margin-top: 30px;
     }
+
     .art {
-      border: 1px solid #ccc;
-      padding: 10px;
+      border: 2px solid #ddd;
+      padding: 20px;
       background: #fff;
       text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       cursor: pointer;
-      transition: transform 0.3s;
+      transition: all 0.3s ease;
+      border-radius: 12px;
+      overflow: hidden;
     }
+
     .art:hover {
-      transform: scale(1.05);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      border-color: #00f7ff;
     }
+
     .art canvas {
       image-rendering: pixelated;
-      border: 1px solid #ddd;
+      border: 2px solid #eee;
       width: 150px;
       height: 150px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
     }
+
+    .art:hover canvas {
+      border-color: #00ccff;
+    }
+
     .username {
-      margin-top: 5px;
-      font-size: 0.9em;
-      color: #555;
+      margin: 15px 0 10px 0;
+      font-size: 1em;
+      color: #333;
+      font-weight: bold;
     }
+
+    .reactions {
+      margin: 15px 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .reactions button {
+      padding: 8px 12px;
+      font-size: 18px;
+      min-width: 44px;
+      border-radius: 50px;
+    }
+
+    .comment-list {
+      font-size: 13px;
+      margin: 15px 0;
+      text-align: left;
+      max-height: 100px;
+      overflow-y: auto;
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #e9ecef;
+    }
+
+    .comment-list:empty {
+      display: none;
+    }
+
+    .comment-list p {
+      margin: 5px 0;
+      padding: 5px;
+      background: #fff;
+      border-radius: 4px;
+      border-left: 3px solid #ff9800;
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .comment-form input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s ease;
+    }
+
+    .comment-form input:focus {
+      outline: none;
+      border-color: #ff9800;
+    }
+
+    .comment-form button {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+
     .zoomed {
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(7);
+      transform: translate(-50%, -50%) scale(5);
       z-index: 1000;
-      background: rgba(0, 0, 0, 0.5);
-      padding: 5px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+      background: rgba(0, 0, 0, 0.9);
+      padding: 1px;
+      /* border-radius: 5px; */
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+    }
+
+    .zoomed img {
+      max-width: 80vw;
+      max-height: 80vh;
+      image-rendering: pixelated;
+      border-radius: 8px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 50px;
+      color: #fff;
+      font-size: 1.2em;
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px;
+      border: 1px solid #f5c6cb;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .gallery-header h1 {
+        font-size: 2em;
+      }
+      
+      .gallery-container {
+        margin: 20px auto;
+        padding: 15px;
+      }
+      
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+      }
+      
+      .art {
+        padding: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gallery-header {
+        padding: 20px 15px;
+      }
+      
+      .gallery-header h1 {
+        font-size: 1.8em;
+      }
+      
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      .reactions {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* Accessibility improvements */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
-
 </head>
 <body>
-    
-  <!-- <h1>🎨 Public Pixel Gallery</h1>
-  <div class="gallery-grid" id="galleryGrid"></div>
-  <button id="backBtn">Back to Canvas</button> -->
-
   <div class="gallery-header">
     <h1>public pixion gallery</h1>
     <p>explore amazing pixel art creations from our creative artists out there</p>
   </div>
-  
-  <!-- Add a div to wrap both gallery and navigation -->
   <div class="gallery-container">
     <div class="gallery-grid" id="galleryGrid"></div>
     <div class="nav-container">
       <button id="backBtn">Back to Canvas</button>
     </div>
   </div>
-  
-
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import {
+      getFirestore, collection, getDocs, doc, updateDoc,
+      increment, arrayUnion
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCqZKvkxr8vddWBaOlnGFTfyrIOq8Aw0Ys",
@@ -150,10 +322,28 @@
     const db = getFirestore(app);
     const galleryGrid = document.getElementById("galleryGrid");
 
+    async function getGalleryDocRefById(id) {
+      return doc(db, "publicGallery", id);
+    }
+
+    async function reactToArtwork(docRef, type) {
+      await updateDoc(docRef, {
+        [`reactions.${type}`]: increment(1)
+      });
+    }
+
+    async function commentOnArtwork(docRef, comment) {
+      await updateDoc(docRef, {
+        comments: arrayUnion(comment)
+      });
+    }
+
     async function renderGallery() {
       const snapshot = await getDocs(collection(db, "publicGallery"));
-      snapshot.forEach(doc => {
-        const data = doc.data();
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const id = docSnap.id;
+
         const canvas = document.createElement("canvas");
         canvas.width = data.drawing.size;
         canvas.height = data.drawing.size;
@@ -180,19 +370,83 @@
         const name = document.createElement("div");
         name.className = "username";
         name.textContent = data.name || "Anonymous";
-
         container.appendChild(name);
+
+        const reactionsDiv = document.createElement("div");
+        reactionsDiv.className = "reactions";
+        ["like", "love", "funny"].forEach(type => {
+          const count = data.reactions?.[type] || 0;
+
+          const btn = document.createElement("button");
+          btn.textContent = `${type === "like" ? "👍" : type === "love" ? "❤️" : "😂"} ${count}`;
+          
+          btn.addEventListener("click", async () => {
+            const docRef = await getGalleryDocRefById(id);
+            await reactToArtwork(docRef, type);
+            btn.textContent = `${btn.textContent.split(' ')[0]} ${count + 1}`;
+          });
+
+          reactionsDiv.appendChild(btn);
+        });
+
+        container.appendChild(reactionsDiv);
+
+        const commentsDiv = document.createElement("div");
+        const commentList = document.createElement("div");
+        commentList.className = "comment-list";
+
+        if (data.comments) {
+          data.comments.forEach(c => {
+            const p = document.createElement("p");
+            p.textContent = `${c.user}: ${c.text}`;
+            commentList.appendChild(p);
+          });
+        }
+
+        const form = document.createElement("form");
+        form.className = "comment-form";
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "Write a comment...";
+        input.required = true;
+
+        const submit = document.createElement("button");
+        submit.type = "submit";
+        submit.textContent = "Post";
+
+        form.appendChild(input);
+        form.appendChild(submit);
+
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const text = input.value.trim();
+          if (!text) return;
+
+          const docRef = await getGalleryDocRefById(id);
+          await commentOnArtwork(docRef, { user: "Anonymous", text });
+
+          // Update the comment list immediately
+          const p = document.createElement("p");
+          p.textContent = `Anonymous: ${text}`;
+          commentList.appendChild(p);
+          input.value = "";
+        });
+
+
+        commentsDiv.appendChild(commentList);
+        commentsDiv.appendChild(form);
+        container.appendChild(commentsDiv);
+
         galleryGrid.appendChild(container);
       });
     }
 
-
     document.getElementById("backBtn").addEventListener("click", () => {
-        window.location.href = "index.html";
+      window.location.href = "index.html";
     });
 
     document.addEventListener("DOMContentLoaded", () => {
-      const galleryGrid = document.getElementById("galleryGrid");
       galleryGrid.addEventListener("click", (event) => {
         if (event.target.tagName === "CANVAS") {
           const imgUrl = event.target.toDataURL();
@@ -207,12 +461,7 @@
       });
     });
 
-
-
     renderGallery();
   </script>
-
-  
 </body>
 </html>
-

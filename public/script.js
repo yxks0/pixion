@@ -11,12 +11,26 @@ const loadBtn = document.getElementById("loadBtn");
 const exportBtn = document.getElementById("exportBtn");
 const gridSizeInput = document.getElementById("gridSize");
 const resizeBtn = document.getElementById("resizeBtn");
+const bucketBtn = document.getElementById("bucketBtn");
 
 let rows = 32;
 let cols = 32;
-let isEraser = false;
+
 let undoStack = [];
 let redoStack = [];
+
+let isEraser = false;
+let isBrush = false;
+let isBucket = false;
+let isEyedropper = false;
+
+
+function resetTools() {
+  isEraser = false;
+  isBucket = false;
+  isBrush = false;
+  isEyedropper = false;
+}
 
 function createGrid(size) {
   pixelGrid.innerHTML = "";
@@ -29,11 +43,19 @@ function createGrid(size) {
     cell.dataset.index = i;
 
     cell.addEventListener("click", () => {
-      const prevColor = cell.style.backgroundColor;
-      const newColor = isEraser ? "white" : colorPicker.value;
-      saveState(); // Save before changing
-      cell.style.backgroundColor = newColor;
-    });
+      if (isEyedropper) {
+        const sampledColor = cell.style.backgroundColor || "rgb(255, 255, 255)";
+        const hex = rgbToHex(sampledColor);
+        colorPicker.value = hex;
+        isEyedropper = false;
+        return;
+      }
+
+  const newColor = isEraser ? "white" : colorPicker.value;
+  saveState();
+  cell.style.backgroundColor = newColor;
+});
+
 
     pixelGrid.appendChild(cell);
   }
@@ -60,67 +82,81 @@ eraserBtn.addEventListener("click", () => {
   isEraser = true;
 });
 
-
-const bucketBtn = document.getElementById("bucketBtn");
-let isBucket = false;
-
-// Toggle Paint Bucket tool
 bucketBtn.addEventListener("click", () => {
+  resetTools();
   isBucket = true;
-  isEraser = false;
 });
 
-// Flood Fill Function (Recursive)
-// function floodFill(cell, targetColor, fillColor) {
-//   if (!cell || cell.style.backgroundColor === fillColor || cell.style.backgroundColor !== targetColor) {
-//     return;
-//   }
-
-//   cell.style.backgroundColor = fillColor;
-
-//   const index = parseInt(cell.dataset.index);
-//   const neighbors = [
-//     document.querySelector(`[data-index="${index - 1}"]`), // Left
-//     document.querySelector(`[data-index="${index + 1}"]`), // Right
-//     document.querySelector(`[data-index="${index - rows}"]`), // Above
-//     document.querySelector(`[data-index="${index + rows}"]`), // Below
-//   ];
-
-//   neighbors.forEach(neighbor => floodFill(neighbor, targetColor, fillColor));
-// }
-
-// // Apply Fill on Click
-// pixelGrid.addEventListener("click", (e) => {
-//   if (isBucket && e.target.classList.contains("cell")) {
-//     const cell = e.target;
-//     const targetColor = cell.style.backgroundColor || "white";
-//     const fillColor = colorPicker.value;
-//     saveState();
-//     floodFill(cell, targetColor, fillColor);
-//   }
-// });
-
-// function resetTools() {
-//   isEraser = false;
-//   isBucket = false;
-// }
-
-// bucketBtn.addEventListener("click", () => {
-//   resetTools();
-//   isBucket = true;
-// });
-
-
-// Apply Fill on Click
 pixelGrid.addEventListener("click", (e) => {
   if (isBucket && e.target.classList.contains("cell")) {
     const cell = e.target;
-    const targetColor = cell.style.backgroundColor || "white";
+    const targetColor = cell.style.backgroundColor || "white";  // Fix here
     const fillColor = colorPicker.value;
+    if (targetColor === fillColor) return;
     saveState();
     floodFill(cell, targetColor, fillColor);
   }
 });
+
+function floodFill(startCell, targetColor, fillColor) {
+  if (!startCell) return;
+
+  const gridSize = rows; // or cols (same for square)
+  const cells = document.querySelectorAll(".cell");
+  const stack = [startCell];
+  const visited = new Set();
+
+  while (stack.length) {
+    const current = stack.pop();
+    const index = parseInt(current.dataset.index);
+    if (visited.has(index)) continue;
+    visited.add(index);
+
+    const currentColor = current.style.backgroundColor || "white";  // Fix here
+
+    if (currentColor !== targetColor) continue;
+
+    current.style.backgroundColor = fillColor;
+
+    const x = index % gridSize;
+    const y = Math.floor(index / gridSize);
+
+    const neighbors = [];
+    if (x > 0) neighbors.push(cells[index - 1]);             // Left
+    if (x < gridSize - 1) neighbors.push(cells[index + 1]);  // Right
+    if (y > 0) neighbors.push(cells[index - gridSize]);      // Top
+    if (y < gridSize - 1) neighbors.push(cells[index + gridSize]); // Bottom
+
+    neighbors.forEach(n => {
+      const nColor = n.style.backgroundColor || "white";     // Fix here
+      if (nColor === targetColor) {
+        stack.push(n);
+      }
+    });
+  }
+}
+
+
+const eyedropperBtn = document.getElementById("eyedropperBtn");
+
+eyedropperBtn.addEventListener("click", () => {
+  resetTools();
+  isEyedropper = true;
+});
+
+function rgbToHex(rgb) {
+  const result = rgb.match(/\d+/g);
+  if (!result) return "#ffffff";
+  return (
+    "#" +
+    result
+      .map(x => {
+        const hex = parseInt(x).toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+      })
+      .join("")
+  );
+}
 
 
 
@@ -150,7 +186,6 @@ clearBtn.addEventListener("click", () => {
 const slotSelector = document.getElementById("slotSelector");
 
 saveBtn.addEventListener("click", async () => {
-  // if (!auth.currentUser) return alert("Please log in first.");
   const colors = Array.from(document.querySelectorAll(".cell")).map(cell => cell.style.backgroundColor);
   const drawingData = { colors, size: rows };
   const slot = slotSelector.value;
@@ -158,7 +193,6 @@ saveBtn.addEventListener("click", async () => {
 });
 
 loadBtn.addEventListener("click", async () => {
-  // if (!auth.currentUser) return alert("Please log in first.");
   const slot = slotSelector.value;
   const data = await window.loadDrawing(slot);
   if (data) {
@@ -171,11 +205,9 @@ loadBtn.addEventListener("click", async () => {
   }
 });
 
-
 const uploadGalleryBtn = document.getElementById("uploadGalleryBtn");
 
 uploadGalleryBtn.addEventListener("click", async () => {
-  // if (!auth.currentUser) return alert("Please log in first.");
 
   const cells = document.querySelectorAll(".cell");
   if (!cells.length) return alert("No drawing to upload!");
@@ -186,8 +218,55 @@ uploadGalleryBtn.addEventListener("click", async () => {
     size: rows
   };
 
+  // await addDoc(collection(db, "publicGallery"), {
+  //   drawing: drawingData,
+  //   name: auth.currentUser.displayName || "Anonymous",
+  //   reactions: { like: 0, love: 0, wow: 0 },
+  //   comments: []
+  // });
+
   await window.uploadToGallery(drawingData);
 });
+
+// uploadGalleryBtn.addEventListener("click", async () => {
+//   if (!auth.currentUser) return alert("Please log in first.");
+
+//   const cells = document.querySelectorAll(".cell");
+//   if (!cells.length) return alert("No drawing to upload!");
+
+//   const colors = Array.from(cells).map(cell => cell.style.backgroundColor);
+//   const title = prompt("Enter a title for your artwork:", "My Art");
+
+//   const drawingData = {
+//     title: title || "Untitled",
+//     colors,
+//     size: rows,
+//     userId: auth.currentUser.uid
+//   };
+
+//   await addDoc(collection(db, "publicGallery"), {
+//     drawing: drawingData,
+//     name: auth.currentUser.displayName || "Anonymous",
+//     reactions: { like: 0, love: 0, wow: 0 },
+//     comments: []
+//   });
+
+//   alert("Uploaded to gallery!");
+// });
+
+// // Reaction
+// await updateDoc(docRef, {
+//   [`reactions.${reactionType}`]: increment(1)
+// });
+
+// // Comment
+// await updateDoc(docRef, {
+//   comments: arrayUnion({ user: displayName, text: commentText })
+// });
+
+
+
+
 
 
 
@@ -219,6 +298,40 @@ async function displayGallery() {
 
 // Optionally call it on load
 window.addEventListener("load", displayGallery);
+
+// import {
+//     doc,
+//     getDoc,
+//     updateDoc,
+//     increment,
+//     arrayUnion
+//   } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-firestore.js"; // adjust based on your Firebase version
+
+//   import { db } from "./firebase.js";
+
+//   window.getGalleryDocRefById = async (id) => {
+//     return doc(db, "publicGallery", id);
+//   };
+
+//   window.reactToArtwork = async (docRef, type) => {
+//     await updateDoc(docRef, {
+//       [`reactions.${type}`]: increment(1)
+//     });
+//   };
+
+//   window.commentOnArtwork = async (docRef, comment) => {
+//     await updateDoc(docRef, {
+//       comments: arrayUnion(comment)
+//     });
+//   };
+
+//   window.loadPublicGallery = async () => {
+//   const querySnapshot = await getDocs(collection(db, "publicGallery"));
+//   return querySnapshot.docs.map(doc => ({
+//     ...doc.data(),
+//     id: doc.id
+//   }));
+// };
 
 
 
